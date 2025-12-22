@@ -63,7 +63,7 @@ exports.loginAdmin = async (req, res) => {
         res.status(200).json({
             message: "Login Successfull",
             token,
-            admin: adminData
+            data: adminData
         })
     } catch (error) {
         res.status(500).json({ message: error.message });
