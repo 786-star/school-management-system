@@ -7,6 +7,7 @@ const app = express();
 
 // routes middleware 
 const adminRoutes = require('./routes/adminRoutes')
+const teacherRoutes = require('./routes/teacherRoutes')
 
 
 app.use(express.json());
@@ -16,6 +17,7 @@ app.use(cors());
 
 // routes 
 app.use("/api/admin", adminRoutes);
+app.use("/api/teacher", teacherRoutes);
 
 
 const PORT = process.env.PORT;
