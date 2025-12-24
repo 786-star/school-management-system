@@ -1,6 +1,7 @@
 const Admin = require('../models/adminModel')
 const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const Student = require('../models/studentModel');
 
 // REGISTER ADMIN
 exports.registerAdmin = async (req, res) => {
@@ -64,6 +65,22 @@ exports.loginAdmin = async (req, res) => {
             message: "Login Successfull",
             token,
             data: adminData
+        })
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+
+
+// get All Students 
+exports.getAllStudents = async (req, res) => {
+    try {
+        const students = await Student.find().select('-password')
+
+        res.status(200).json({
+            total: students.length,
+            students
         })
     } catch (error) {
         res.status(500).json({ message: error.message });

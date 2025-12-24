@@ -1,7 +1,6 @@
 const express = require('express')
-const { registerAdmin, loginAdmin } = require('../controllers/adminController');
-const { protect } = require('../middleware/authMiddleware');
-const { isAdmin } = require('../middleware/adminMiddleware');
+const { registerAdmin, loginAdmin, getAllStudents } = require('../controllers/adminController');
+const { protect, isAdmin } = require('../middleware/authMiddleware');
 const router = express.Router();
 
 router.post('/register', registerAdmin)
@@ -14,5 +13,8 @@ router.get('/profile', protect, isAdmin, (req, res) => {
         user: req.user
     })
 })
+
+// admin see all students 
+router.get('/all-students', protect, isAdmin, getAllStudents)
 
 module.exports = router

@@ -1,4 +1,5 @@
 const Teacher = require('../models/teacherModel')
+const Student = require("../models/studentModel")
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
@@ -36,7 +37,7 @@ exports.loginTeacher = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        const teacher = await Teacher.findOne({ email })
+        const teacher = await Teacher.findOne({ email }).select('+password')
         if (!teacher) {
             return res.status(400).json({ message: "Teacher Not found" })
         }
@@ -60,6 +61,24 @@ exports.loginTeacher = async (req, res) => {
             token,
             teacher: teacherData,
         });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+exports.getMyStudents = async (req, res) => {
+    try {
+        const teacherClass = req.user.assignedClass;
+        if (!teacherClass) {
+            return res.status(400).json({ message: "No Class assigned to teacher" })
+        }
+
+        const students = await Student.findOne({ className: teacherClass }).select('-password')
+
+        res.status(200).json({
+            total: students.length,
+            students
+        })
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
