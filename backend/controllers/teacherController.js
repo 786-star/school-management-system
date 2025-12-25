@@ -48,7 +48,11 @@ exports.loginTeacher = async (req, res) => {
         }
 
         const token = jwt.sign(
-            { id: teacher._id, role: teacher.role },
+            {
+                id: teacher._id,
+                role: teacher.role,
+                assignedClass: teacher.assignedClass
+            },
             process.env.JWT_SECRET,
             { expiresIn: '1d' }
         )
@@ -73,7 +77,7 @@ exports.getMyStudents = async (req, res) => {
             return res.status(400).json({ message: "No Class assigned to teacher" })
         }
 
-        const students = await Student.findOne({ className: teacherClass }).select('-password')
+        const students = await Student.find({ className: teacherClass }).select('-password')
 
         res.status(200).json({
             total: students.length,

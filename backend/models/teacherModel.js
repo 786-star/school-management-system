@@ -5,7 +5,10 @@ const teacherSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true, select: false, },
     subject: { type: String },
-    assignedClass: { type: String },
+    assignedClass: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Class"
+    },
     role: { type: String, default: 'teacher' }
 }, { timestamps: true })
 
